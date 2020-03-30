@@ -4,6 +4,10 @@
 Python 3.6 or above
 
 ## scripts
+* `run.py` supports running scripts from command line
+	* running `python run.py <file path>` outputs the answer for the inputs specified `<file path>`
+	* eg: `python run.py random.in`
+	* for file inputs, the first line should contain 2 space-separated numbers, N and T. N is the number of people. T is the number of transactions. Each of the following T lines has 2 space-speratated components: name of the payer (which will be read as a String), amount paid (which will be read as an integer). Refer to `random.in` for example
 * `transaction_calculator.py` contains the implemented solution and documentation for input and output format
 	* running `python transcation_calculator.py` will print out answers for the examples in email
 * `test.py` contains test cases
