@@ -4,7 +4,7 @@ from math import isclose
 Inputs:
 transactions:
 [
-	["Alice", 60],
+	["Alice", 60], # amounts here are assumed to be integers
 	["Bob", 120],
 	["Charlie", 30]
 ]
