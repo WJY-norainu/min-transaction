@@ -1,34 +1,52 @@
+from math import isclose
+
 '''
-Input format:
+Inputs:
+transactions:
 [
 	["Alice", 60],
 	["Bob", 120],
 	["Charlie", 30]
 ]
+names:
+["Alice", "Bob", "Charlie"]
 
-Output format:
+Outputs:
+assignments:
 [
-	["Alice", "Bob", 10],
-	["Charlie", "Bob", 40]
+	["Alice", "Bob", 10.0],
+	["Charlie", "Bob", 40.0]
 ]
 '''
-def calculate(transactions):
-	lenders, borrowers = calculate_net_lenders_borrowers(transactions)
+def calculate(transactions, names=[]):
+	input_size = len(transactions) + len(names)
+	if not names:
+		print("WARNING: no names have been entered. Program will proceeed assuming that every person has appeared in transactions")
+	lenders, borrowers = get_net(transactions, names)
+	if len(lenders) + len(borrowers) >= 10:
+		print("The algorithm runs in O((X+Y)!^2), where X is the number of net borrowers and Y is the number of net lenders")
+		print("Large test case can take long to run or encounter MaximumRecursionDepthExceed error")
 	return subroutine(lenders, borrowers, [])
 
 
-def calculate_net_lenders_borrowers(transactions):
+def get_net(transactions, names=[]):
 	amt_by_person = dict()
 	total = 0
 	for name, amt in transactions:
 		amt_by_person[name] = amt_by_person.get(name, 0) + amt
 		total += amt
 	
-	amt_to_pay = total / len(amt_by_person)
+	if not names:
+		names = amt_by_person.keys()
+	amt_to_pay = total / len(names)
+	if total != amt_to_pay * len(names):
+		print("floating precision issue encountered. terminating program...")
+		exit()
+
 	lenders = dict()
 	borrowers = dict()
-	for name in amt_by_person:
-		net = amt_by_person[name] - amt_to_pay
+	for name in names:
+		net = amt_by_person.get(name, 0) - amt_to_pay
 		if net > 0:
 			lenders[name] = net
 		elif net < 0:
@@ -39,7 +57,11 @@ def calculate_net_lenders_borrowers(transactions):
 
 # need to justify a greedy move where each time we pay, we pay as much as we can
 def subroutine(lenders, borrowers, assignments):
-	assert sum(lenders.values()) == sum(borrowers.values()), "the net amt lent should be equal to net amt borrowed"
+	total_lent_amt = sum(lenders.values())
+	total_borrowed_amt = sum(borrowers.values())
+	if total_lent_amt != total_borrowed_amt:
+		print(total_lent_amt, total_borrowed_amt)
+	assert total_lent_amt == total_borrowed_amt, "the net amt lent should be equal to net amt borrowed"
 	if not lenders and not borrowers:
 		return assignments
 
@@ -73,16 +95,19 @@ def subroutine(lenders, borrowers, assignments):
 		lenders[lender] = lent_amt
 	return answer
 
-transactions = [
-	["A", 16],
-	["B", 18],
-	["C", 3],
-	["D", 3],
-	["E", 0]
-]
-transactions = [
-	["Alice", 60],
-	["Bob", 120],
-	["Charlie", 30]
-]
-#print(calculate(transactions))
+
+if __name__ == "__main__":
+	transactions = [
+		["Alice", 60],
+		["Bob", 120],
+		["Charlie", 30]
+	]
+	names = ["Alice", "Bob", "Charlie"]
+	print(calculate(transactions, names))
+
+	transactions = [
+		["Ali", 10],
+		["Zack", 30]
+	]
+	names = ["Ali", "Zack"]
+	print(calculate(transactions, names))
