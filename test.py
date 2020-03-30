@@ -54,7 +54,7 @@ def test_some_never_pay():
 		print("test_some_never_pay passed")
 	else:
 		print("test_some_never_pay failed")
-		
+
 '''
 subroutine
 '''
@@ -67,7 +67,7 @@ def is_legal_assignment(lenders, borrowers, assignments):
 	for borrower, lender, amt in assignments:
 		borrowers[borrower] -= amt
 		lenders[lender] -= amt
-	if sum(borrowers.values()) != sum(lenders.values()):
+	if any(borrowers.values()) or any(lenders.values()):
 		print("Assigned amount doesn't match borrowed/lent amount")
 		return False
 	return True
