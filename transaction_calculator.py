@@ -14,7 +14,7 @@ names:
 Outputs:
 assignments:
 [
-	["Alice", "Bob", 10.0],
+	["Alice", "Bob", 10.0], # this means Alice pays Bob 10
 	["Charlie", "Bob", 40.0]
 ]
 '''
@@ -67,9 +67,9 @@ def subroutine(lenders, borrowers, assignments):
 
 	# try all possible assignments
 	answer = []
-	for lender in lenders:
+	for lender in lenders.copy():
 		lent_amt = lenders.pop(lender)
-		for borrower in borrowers:
+		for borrower in borrowers.copy():
 			borrowed_amt = borrowers.pop(borrower)
 			assignments.append([borrower, lender, min(lent_amt, borrowed_amt)])
 			# if amts match, recurse without the current lender and borrower
