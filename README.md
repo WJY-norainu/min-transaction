@@ -26,4 +26,18 @@ Intuition: without loss of generality, assume A has borrowed less than B has len
 The implemented solution runs O((X+Y)!^2), where X is the number of net borrowers and Y is the number of net lenders.
 
 ## proof of NP-completeness
-TBD
+Sketch:
+
+* Claim: the problem is in NP.
+	* Given an assignment, we can verify if the assignment is legal in polynomial time
+	* Hence in NP
+* Claim: there is a polynomial time reduction from partition to the problem.
+	* if the sum of all integers in the set is not even, output no
+	* otherwise
+		* create 2 net lenders whose net lent amount is (sum/2) each
+		* for each integer in the set, create 1 borrower whose net borrowed amount is the same as the integer
+		* check if there exists an assignment using K transactions to pay back everything
+* Claim: partition outputs YES -> the reduced problem outputs YES
+	* intuitively true. just group the net borrowers according to the integer partitions.
+* Claim: partition outputs NO -> the reduced problem outpus NO
+	* intuitively true. if there exists a solution to the reduced problem, then it's possible to partition the set into 2 sets to obtain a solution for partition. By contradiction, the claim is true.
